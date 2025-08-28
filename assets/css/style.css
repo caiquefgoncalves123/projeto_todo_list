@@ -278,6 +278,11 @@ main > section:nth-of-type(2) > div:nth-child(2) span{
   width:18px; height:18px; opacity:.65;
 }
 
+.tarefa-item.concluida p {
+text-decoration: line-through;
+color: #888;
+}
+
 /* ------------------------------
    Responsivo
 --------------------------------*/

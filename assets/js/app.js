@@ -1,20 +1,17 @@
 var listaTarefas = []
-
-
+var textoFiltro = "" // Novo: guarda o texto do filtro
 
 function carregarInformacoes() {
     var tarefasNaoConcluidas = 0
     var tarefasConcluidas = 0
 
     listaTarefas.forEach(function(item) {
-        if(item.tarefaConcluidas === true) {
+        if(item.concluido === true) {
             tarefasConcluidas ++
         } else {
             tarefasNaoConcluidas ++
         }
-        
     })
-    
 
     document.getElementById("numTarefas").innerHTML = tarefasNaoConcluidas
     document.getElementById("numConcluidas").innerHTML = tarefasConcluidas
@@ -30,50 +27,87 @@ function carregarInformacoes() {
     exibirListaTarefas()
 }
 
-
 carregarInformacoes()
-
-
 
 var formCadastro = document.getElementById("formCadastroTarefa")
 
 formCadastro.addEventListener("submit", function(evento){
     evento.preventDefault(); 
 
-    
     var dadosForm = new FormData(this)
-    var tarefa = dadosForm.get("tarefa")
+    var tarefa = dadosForm.get("tarefa").trim()
+
+    // Atividade 05
+    if (!tarefa) {
+        alert("Digite uma tarefa!")
+        return
+    }
+
+    // Atividade 04
+    var duplicada = listaTarefas.some(function(item) {
+        return item.tarefa === tarefa
+    })
+    if (duplicada) {
+        alert("Tarefa já existe!")
+        return
+    }
+
+    
+
     var objSalva = {
         tarefa: tarefa, 
         concluido: false
     }
 
-    
-    
-    
     listaTarefas.push(objSalva)
-
-    
     carregarInformacoes()
 })
-
 
 function exibirListaTarefas() {
     var html = document.getElementById("listaTarefas")
     html.innerHTML = ""
+
+    // Atividade 06
+    var tarefasFiltradas = listaTarefas.filter(function (item) {
+        return item.tarefa.includes(textoFiltro)
+    })
     
-    
-    listaTarefas.forEach(function(item) {
+
+    tarefasFiltradas.forEach(function(item, indexFiltrado) {
+        // Atividade 07
+        var indexOriginal = listaTarefas.indexOf(item)
         html.innerHTML += `
-             <div>
-                <button title="Concluir Tarefa"></button>
+             <div class="tarefa-item${item.concluido ? ' concluida' : ''}">
+                <button title="Concluir Tarefa" onclick="concluirTarefa(${indexOriginal})">
+                    ${item.concluido ? '✔️' : ''}
+                </button>
                 <p>${item.tarefa}</p>
-                <button title="Excluir Tarefa">
-                    <img src="img/lixeira.png" 
-                         alt="Icone Lixeira" />
+                <button title="Excluir Tarefa" onclick="excluirTarefa(${indexOriginal})">
+                    <img src="img/lixeira.png" alt="Icone Lixeira" />
                 </button>
             </div>
         `
-        
     })
 }
+
+// Atividade 01
+function concluirTarefa(index) {
+    listaTarefas[index].concluido = !listaTarefas[index].concluido
+    carregarInformacoes()
+    
+}
+
+// Atividade 02
+function excluirTarefa(index) {
+    listaTarefas.splice(index,1)
+    carregarInformacoes()
+    
+}
+
+// Atividade 06 parte 02
+var campoFiltro = document.getElementById("inputBusca")
+campoFiltro.addEventListener("input", function () {
+    textoFiltro = this.value
+    exibirListaTarefas()
+    
+})
