@@ -41,6 +41,7 @@ formCadastro.addEventListener("submit", function(evento){
     if (!tarefa) {
         alert("Digite uma tarefa!")
         return
+        
     }
 
     // Atividade 04
@@ -53,7 +54,6 @@ formCadastro.addEventListener("submit", function(evento){
     }
 
     
-
     var objSalva = {
         tarefa: tarefa, 
         concluido: false
