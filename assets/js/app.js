@@ -1,5 +1,5 @@
 var listaTarefas = []
-var textoFiltro = "" // Novo: guarda o texto do filtro
+var textoFiltro = "" 
 
 function carregarInformacoes() {
     var tarefasNaoConcluidas = 0
@@ -46,7 +46,7 @@ formCadastro.addEventListener("submit", function(evento){
 
     // Atividade 04
     var duplicada = listaTarefas.some(function(item) {
-        return item.tarefa === tarefa
+        return item.tarefa.toLowerCase() === tarefa.toLowerCase()
     })
     if (duplicada) {
         alert("Tarefa já existe!")
